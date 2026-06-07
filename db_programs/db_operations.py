@@ -1,8 +1,8 @@
 import pymysql
-
 import db_connect2 as dbc
 def create_db():
-      query='create database if not exists vaishu_db'
+      database_name=input("Enter the database name to create:")
+      query=f"create database if not exists {database_name}"
       try:
           connection=dbc.db_connect()
           cursor=connection.cursor()
@@ -121,19 +121,38 @@ def list_employees():
          result=cursor.execute(query)
          rows=cursor.fetchall()
          if rows:
-              print('-'*80)
-              print('%-5s %-20s %-20s %-15s %-15s'%('ID','NAME','DESIGNATION','SALARY','PHONE NUMBER'))
-              print('-'*80)
+              print('-'*90)
+              print('| %-5s | %-20s | %-20s | %-15s | %-15s |'%('ID','NAME','DESIGNATION','SALARY','PHONE NUMBER'))
+              print('-'*90)
          for row in rows:
-                print('%-5s %-20s %-20s %-15s %-15s'%row)
-         print('-'*80)
+                print('| %-5s | %-20s | %-20s | %-15s | %-15s |'%row)
+         print('-'*90)
          cursor.close()
          dbc.db_disconnect(connection)
     except Exception as e:
          print("Error in listing employees")
 
+def drop_employees():
+    query='drop table employees'
+    try:
+         connection=dbc.db_connect()
+         cursor=connection.cursor()
+         result=cursor.execute(query)
+         connection.commit()
+         cursor.close()
+         dbc.db_disconnect(connection)
+         if result==1:
+              print("Employees table dropped successfully")
+         else:   
+              print("Failed to drop employees table")
+    except Exception as e:
+         print("Error in dropping employees table")
 
-
+def exit_app():
+        print("DB Connection closed")
+        print("Exiting application")
+        exit(0)
+        
 def menu(choice):
      match choice:
           case 1:
@@ -147,8 +166,9 @@ def menu(choice):
           case 5:
                list_employees()
           case 6:
-               print("Exiting employee app")
-               exit(0)
+               drop_employees()
+          case 7:
+               exit_app()
           case _:
                print("Invalid choice")
         
@@ -159,7 +179,8 @@ def run_employee_app():
             print("3. Delete employee record")
             print("4. Search employee record")
             print("5. List all employees")
-            print("6. Exit")
+            print("6. Drop employees table")
+            print("7. Exit")
             choice=int(input("Enter your choice:"))
             menu(choice)
 
@@ -169,4 +190,4 @@ run_employee_app()
 
 
 
- # query='create table if not exists employee(id int primary key auto_increment,name varchar(200) not null,age int , department varchar(200),designation varchar(200),salary float,commision float default 0.0, years_of_experience tinyint,phone_number bigint unique)'
+ # query='create table if not exists employee(id int primary key auto_increment,name varchar(200) not null,age int , department varchar(200),designation varchar(200),salary float,commision float default 0.0, years_of_experience tinyint,phone_number bigint unique)'zz
