@@ -286,13 +286,13 @@ Display emp name, dept name including the dept not having emps.
 select e.name, d.name from employees e right join departments d on e.dept_id d.id;
 
 Display emp name, dept name inclduing the employees whose dept details are not avaialble in the dept table.
-select e.name, d.name from employees e right join departments d on e.dept_id d.id;
+select e.name, d.name from employees e left join departments d on e.dept_id d.id;
 
 Display emp name, dept name with all depts where depts may not have emps and all emps who are not associated with any dept.
-select e.name, d.name from employees e right join departments d on e.dept_id d.id;
+select e.emp_name, d.dept_name from emp e left join dept d on e.dept_id=d.dept_id union select e.emp_name,d.dept_name from emp e right join dept d on e.dept_id=d.dept_id;
 
-github.com/neelmyna/vce_db_jun26
-readme.md
+
+
 
 create table books(id int primary key auto_increment, code char(4) check(code like 'B[0-9][0-9][0-9]') unique,
 title varchar(40) not null, author varchar(40) , price smallint check(price > 100), publish_date datetime default(curdate()) , publisher varchar(40) not null, category varchar(25), book_language varchar(20));
@@ -302,10 +302,10 @@ create table books(id int primary key auto_increment, code varchar(4) generated 
 int num = 235;
 printf("%d");
 235
-printf("%6d");
-   235
-printf("%-6d##");
-235   ##
+printf("%6d"); //adds six 3 spaces to the left and prints the number right aligned
+   235 
+printf("%-6d##"); //
+235   ##   //left aligned next three spaces then ##
 printf("05d");
 00235
 
